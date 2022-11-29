@@ -1,52 +1,44 @@
 #include "lists.h"
-#include <stdlib.h>
 
 /**
- * insert_node - Inserts a number into a sorted singly linked list
- * @head: Double pointer to a singly linked list
- * @number: Value of the new node.
- * Return: The address of the new node, or NULL if it failed.
- */
+* insert_node - inserts  node in a sorted singly linked list
+* @head: head of the linked list.
+* @number: data in the new node.
+* Return: address of the new node.
+*/
 
 listint_t *insert_node(listint_t **head, int number)
 {
-	int flag = 0;
-	listint_t *new_node = NULL, *actual = NULL, *after = NULL;
+	listint_t *newNode;
+	listint_t *first;
 
+	first = *head;
 
-	if (head == NULL)
-		return (NULL new_node = malloc(sizeof(listint_t)));
-	if (!new_node)
+	newNode = malloc(sizeof(listint_t));
+	if (newNode == NULL)
 		return (NULL);
-	new_node->n = number, new_node->next = NULL;
-	if (*head == NULL)
+
+	newNode->n = number;
+	newNode->next = NULL;
+
+	if (*head == NULL || first->n > newNode->n)
 	{
-		*head = new_node;
-		return (*head);
+		newNode->next = *head;
+		*head = newNode;
+		return (newNode);
 	}
-	actual = *head;
-	if (number <= actual->n)
+	while (first->next != NULL)
 	{
-		new_node->next = actual, *head = new_node;
-		return (*head);
-	{
-	if (number > actual->n && !actual->next)
-	{
-		actual->next = new_node;
-		return (new_node);
+		if ((first->next->n > newNode->n && first->n < newNode->n)
+			|| newNode->n == first->n)
+		{
+			newNode->next = first->next;
+			first->next = newNode;
+			return (newNode);
+		}
+		first = first->next;
 	}
-	after = actual->next;
-	while (actual)
-	{
-		if (!after)
-			actual->next = new_node, flag = 1;
-		else if (after->n == number)
-			actual->next = new_node, new_node->next = after, flag = 1;
-		else if (after->n > number && actual->n < number)
-			actual->next = new_node, new_node->next = after, flag = 1;
-		if (flag)
-			break;
-		after = after->next, actual = actual->next;
-	}
-	return (new_node);
+	newNode->next = first->next;
+	first->next = newNode;
+	return (newNode);
 }
