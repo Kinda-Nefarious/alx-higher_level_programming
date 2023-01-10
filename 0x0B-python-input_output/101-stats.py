@@ -1,38 +1,22 @@
 #!/usr/bin/python3
-import sys
+"""append_after module"""
 
 
-def print_status():
-    '''
-        Printing the status of the request
-    '''
-    counter = 0
-    size = 0
-    file_size = 0
-    status_codes = {"200": 0, "301": 0, "400": 0, "401": 0,
-                    "403": 0, "404": 0, "405": 0, "500": 0}
+def append_after(filename="", search_string="", new_string=""):
+    """
+    function that inserts a line of text to a file,
+    after each line containing a specific string
+    """
 
-    for l in sys.stdin:
-        line = l.split()
-        try:
-            size += int(line[-1])
-            code = line[-2]
-            status_codes[code] += 1
-        except:
-            continue
-        if counter == 9:
-            print("File size: {}".format(size))
-            for key, val in sorted(status_codes.items()):
-                if (val != 0):
-                    print("{}: {}".format(key, val))
-            counter = 0
-        counter += 1
-    if counter < 9:
-        print("File size: {}".format(size))
-        for key, val in sorted(status_codes.items()):
-            if (val != 0):
-                print("{}: {}".format(key, val))
+    ret_list = []
+    with open(filename, mode='r', encoding="utf-8") as f:
+        full_file = f.read()
+        file_list = full_file.split('\n')
+        for line in file_list:
+            ret_list.append(line + '\n')
+            if search_string in line:
+                ret_list.append(new_string)
 
-
-if __name__ == "__main__":
-    print_status()
+    with open(filename, mode='w', encoding="utf-8") as f:
+        ret_string = "".join(ret_list)
+        f.write(ret_string)
